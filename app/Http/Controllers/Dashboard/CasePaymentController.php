@@ -7,7 +7,9 @@ use App\Http\Requests\CasePayment\CasePaymentStoreRequest;
 use App\Http\Requests\CasePayment\CasePaymentUpdateRequest;
 use App\Models\CasePayment;
 use App\Models\Cases;
+use App\Notifications\GeneralNotification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
 
 class CasePaymentController extends Controller
@@ -26,6 +28,14 @@ class CasePaymentController extends Controller
     {
         $this->checkAvaliablity($request) ;
         $payment  = CasePayment::create($request->validated());
+
+        $case = Cases::find($request->case_id);
+
+        Auth::user()->notify(new GeneralNotification(
+            type:  'payment',
+            title: 'تم إيداع مبلغ جديد',
+            body:  'تم إيداع ' . number_format($payment->amount, 2) . '  جنيه على قضية رقم ' . $case->case_number,
+        ));
         return redirect()->back()->with('success' , 'تم إيدع المبلغ بنجاح الي حسابك') ;
     }
 

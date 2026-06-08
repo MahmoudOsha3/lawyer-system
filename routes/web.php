@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\CasePaymentController;
 use App\Http\Controllers\Dashboard\CaseSessionController;
 use App\Http\Controllers\Dashboard\ClientController;
 use App\Http\Controllers\Dashboard\FinanceController;
+use App\Http\Controllers\Dashboard\NotificationController;
 use App\Http\Controllers\Dashboard\SettingController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,6 +17,7 @@ use Inertia\Inertia;
 
 Route::get('login' , [AuthController::class , 'login' ])->name('login');
 Route::post('login/store', [AuthController::class ,'loginCheck']);
+
 
 Route::group(['middleware'=> 'auth'], function () {
     Route::get('/', [DashboardController::class , 'index']);
@@ -33,6 +35,13 @@ Route::group(['middleware'=> 'auth'], function () {
     Route::post('/settings/office', [SettingController::class, 'saveOffice'])->name('settings.office');
     Route::put('/settings/personal', [SettingController::class, 'savePersonal'])->name('settings.personal');
     Route::put('/settings/password', [SettingController::class, 'savePassword'])->name('settings.password');
+
+
+    Route::get('/notifications',             [NotificationController::class, 'index']);
+    Route::patch('/notifications/read-all',  [NotificationController::class, 'markAllAsRead']);
+    Route::patch('/notifications/{id}/read', [NotificationController::class, 'markAsRead']);
+
+    Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 });
 

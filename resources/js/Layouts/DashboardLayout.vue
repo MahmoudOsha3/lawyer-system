@@ -11,13 +11,13 @@
       </transition>
 
 
-      <aside
-        class="fixed right-0 z-50 flex flex-col bg-white dark:bg-[#161d27] border-l border-slate-200 dark:border-white/5 shadow-2xl transition-all duration-300 ease-in-out lg:static lg:translate-x-0 pt-6"
-        :class="[
-          isSidebarOpen ? 'translate-x-0' : 'translate-x-full',
-          isSidebarCollapsed ? 'w-[68px]' : 'w-64'
-        ]"
-      >
+    <aside
+    class="fixed right-0 z-50 h-screen flex flex-col bg-white dark:bg-[#161d27] border-l border-slate-200 dark:border-white/5 shadow-2xl transition-all duration-300 ease-in-out lg:static lg:translate-x-0"
+    :class="[
+        isSidebarOpen ? 'translate-x-0' : 'translate-x-full',
+        isSidebarCollapsed ? 'w-[68px]' : 'w-64'
+    ]"
+    >
 
         <!-- Logo -->
         <div class="flex items-center gap-3 px-5 h-20 border-b border-slate-100 dark:border-white/5 flex-shrink-0 pb-5">
@@ -96,51 +96,73 @@
 
         </nav>
 
-        <!-- User + Dark Toggle -->
+        <!-- User + Dark Toggle + Logout -->
         <div class="flex-shrink-0 p-3 border-t border-slate-100 dark:border-white/5">
 
-          <!-- Expanded -->
-          <template v-if="!isSidebarCollapsed">
+        <!-- Expanded -->
+        <template v-if="!isSidebarCollapsed">
             <div class="flex items-center gap-3 p-3 rounded-2xl bg-slate-50 dark:bg-white/[0.03] border border-slate-100 dark:border-white/5">
-              <div class="w-9 h-9 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/20 flex items-center justify-center flex-shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/20 flex items-center justify-center flex-shrink-0">
                 <span class="text-sm font-black text-[#d4af37]">م</span>
-              </div>
-              <div class="flex-1 min-w-0">
+            </div>
+            <div class="flex-1 min-w-0">
                 <p class="text-xs font-black text-slate-700 dark:text-white truncate">مكتب العدالة</p>
                 <p class="text-[10px] text-slate-400 truncate">مدير النظام</p>
-              </div>
-              <button
+            </div>
+            <button
                 @click="toggleDark"
                 class="w-8 h-8 rounded-xl flex items-center justify-center text-slate-400 hover:text-[#d4af37] hover:bg-[#d4af37]/10 transition-all flex-shrink-0"
                 :title="isDark ? 'الوضع النهاري' : 'الوضع الليلي'"
-              >
+            >
                 <i :class="isDark ? 'fas fa-sun text-xs' : 'fas fa-moon text-xs'"></i>
-              </button>
+            </button>
             </div>
-          </template>
 
-          <!-- Collapsed -->
-          <template v-else>
+            <!-- Logout Button -->
+            <Link
+            href="/logout"
+            method="post"
+            as="button"
+            class="mt-2 w-full flex items-center gap-3 px-3 py-2.5 rounded-2xl text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all group"
+            >
+            <i class="fas fa-sign-out-alt text-sm w-5 text-center group-hover:scale-110 transition-transform ml-3"></i>
+            <span class="text-sm font-bold">تسجيل الخروج</span>
+            </Link>
+        </template>
+
+        <!-- Collapsed -->
+        <template v-else>
             <div class="flex flex-col items-center gap-2">
-              <div class="w-9 h-9 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/20 flex items-center justify-center">
+            <div class="w-9 h-9 rounded-xl bg-[#d4af37]/15 border border-[#d4af37]/20 flex items-center justify-center">
                 <span class="text-sm font-black text-[#d4af37]">م</span>
-              </div>
-              <button
+            </div>
+            <button
                 @click="toggleDark"
                 class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-[#d4af37] hover:bg-[#d4af37]/10 transition-all"
-              >
+                :title="isDark ? 'الوضع النهاري' : 'الوضع الليلي'"
+            >
                 <i :class="isDark ? 'fas fa-sun text-xs' : 'fas fa-moon text-xs'"></i>
-              </button>
+            </button>
+            <!-- Logout icon only -->
+            <Link
+                href="/logout"
+                method="post"
+                as="button"
+                class="w-9 h-9 rounded-xl flex items-center justify-center text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-500/10 transition-all"
+                title="تسجيل الخروج"
+            >
+                <i class="fas fa-sign-out-alt text-sm"></i>
+            </Link>
             </div>
-          </template>
+        </template>
 
-          <!-- Collapse toggle (desktop only) -->
-          <button
+        <!-- Collapse toggle (desktop only) -->
+        <button
             @click="isSidebarCollapsed = !isSidebarCollapsed"
             class="hidden lg:flex w-full mt-2 items-center justify-center h-7 rounded-xl text-slate-300 dark:text-slate-600 hover:text-[#d4af37] hover:bg-[#d4af37]/5 transition-all text-xs"
-          >
+        >
             <i :class="isSidebarCollapsed ? 'fas fa-chevron-left' : 'fas fa-chevron-right'"></i>
-          </button>
+        </button>
         </div>
       </aside>
 
@@ -175,7 +197,7 @@
             <!-- Notification Bell -->
             <div class="relative" ref="notifRef">
               <button
-                @click="notifOpen = !notifOpen"
+                @click="toggleNotif"
                 class="relative w-9 h-9 rounded-xl flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-[#d4af37] hover:bg-[#d4af37]/5 transition-all border border-transparent hover:border-[#d4af37]/20"
                 :class="{ 'text-[#d4af37] bg-[#d4af37]/5 border-[#d4af37]/20': notifOpen }"
               >
@@ -210,7 +232,7 @@
                       :key="n.id"
                       @click="readNotif(n)"
                       class="flex items-start gap-3 px-4 py-3 cursor-pointer transition-colors hover:bg-slate-50 dark:hover:bg-white/[0.02] border-b border-slate-50 dark:border-white/[0.03] last:border-0"
-                      :class="{ 'bg-[#d4af37]/[0.04]': !n.read }"
+                      :class="{ 'bg-[#d4af37]/[0.04]': !n.is_read }"
                     >
                       <div class="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 mt-0.5"
                         :class="notifIconBg(n.type)">
@@ -221,7 +243,7 @@
                         <p class="text-[10px] text-slate-400 mt-0.5 line-clamp-1">{{ n.body }}</p>
                         <p class="text-[9px] text-slate-300 dark:text-slate-600 mt-1">{{ n.time }}</p>
                       </div>
-                      <div v-if="!n.read" class="w-1.5 h-1.5 rounded-full bg-[#d4af37] mt-2 flex-shrink-0"></div>
+                      <div v-if="!n.is_read" class="w-1.5 h-1.5 rounded-full bg-[#d4af37] mt-2 flex-shrink-0"></div>
                     </div>
 
                     <div v-if="!notifications.length" class="px-4 py-10 text-center">
@@ -254,9 +276,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { Link } from '@inertiajs/vue3'
 import NavLink from '@/Components/NavLink.vue'
+import axios from 'axios'
 
 // ── Sidebar ───────────────────────────────────────────────────────────────────
 const isSidebarOpen      = ref(false)
@@ -271,42 +294,60 @@ const toggleDark = () => {
   localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
 }
 
-onMounted(() => {
-  const saved = localStorage.getItem('theme')
-  if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    isDark.value = true
-    document.documentElement.classList.add('dark')
-  }
-
-  // Close notif on outside click
-  document.addEventListener('click', handleOutsideClick)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('click', handleOutsideClick)
-})
-
 // ── Today Date ────────────────────────────────────────────────────────────────
 const todayFormatted = computed(() =>
-  new Date().toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+  new Date().toLocaleDateString('ar-EG', {
+    weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+  })
 )
 
 // ── Notifications ─────────────────────────────────────────────────────────────
-const notifOpen = ref(false)
-const notifRef  = ref(null)
+const notifOpen     = ref(false)
+const notifRef      = ref(null)
+const notifications = ref([])
+const unreadCount   = ref(0)
+const notifLoading  = ref(false)
 
-const notifications = reactive([
-  { id: 1, type: 'session', title: 'جلسة غداً', body: 'جلسة قضية 2024/1532 في محكمة الجيزة الساعة 10 صباحاً', time: 'منذ 5 دقائق', read: false },
-  { id: 2, type: 'payment', title: 'دفعة جديدة', body: 'تم استلام دفعة 5,000 جنيه من الموكل أحمد محمود', time: 'منذ ساعة', read: false },
-  { id: 3, type: 'task',    title: 'مهمة متأخرة', body: 'مراجعة عقد الإيجار للموكل فاطمة السيد متأخرة 2 أيام', time: 'أمس', read: false },
-  { id: 4, type: 'case',   title: 'قضية جديدة', body: 'تم إضافة قضية جديدة برقم 2024/1877', time: 'أمس', read: true },
-])
+const fetchNotifications = async () => {
+  notifLoading.value = true
+  try {
+    const { data } = await axios.get('/notifications')
+    notifications.value = data.notifications
+    unreadCount.value   = data.unread_count
+  } catch (e) {
+    console.error('Failed to fetch notifications', e)
+  } finally {
+    notifLoading.value = false
+  }
+}
 
-const unreadCount = computed(() => notifications.filter(n => !n.read).length)
+const toggleNotif = () => {
+  notifOpen.value = !notifOpen.value
+  if (notifOpen.value) fetchNotifications()
+}
 
-const readNotif = (n) => { n.read = true }
-const markAllRead = () => notifications.forEach(n => n.read = true)
+const readNotif = async (n) => {
+  if (n.is_read) return
+  try {
+    await axios.patch(`/notifications/${n.id}/read`)
+    n.is_read = true
+    unreadCount.value = Math.max(0, unreadCount.value - 1)
+  } catch (e) {
+    console.error(e)
+  }
+}
 
+const markAllRead = async () => {
+  try {
+    await axios.patch('/notifications/read-all')
+    notifications.value.forEach(n => n.is_read = true)
+    unreadCount.value = 0
+  } catch (e) {
+    console.error(e)
+  }
+}
+
+// ── Icon Helpers ──────────────────────────────────────────────────────────────
 const notifIconBg = (type) => ({
   session: 'bg-[#FAEEDA] dark:bg-amber-500/10',
   payment: 'bg-[#EAF3DE] dark:bg-emerald-500/10',
@@ -328,11 +369,32 @@ const notifIconColor = (type) => ({
   case:    'text-blue-500',
 }[type] || 'text-slate-400')
 
+// ── Outside Click ─────────────────────────────────────────────────────────────
 const handleOutsideClick = (e) => {
   if (notifRef.value && !notifRef.value.contains(e.target)) {
     notifOpen.value = false
   }
 }
+
+// ── Polling ───────────────────────────────────────────────────────────────────
+let pollingInterval = null
+
+onMounted(() => {
+  const saved = localStorage.getItem('theme')
+  if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    isDark.value = true
+    document.documentElement.classList.add('dark')
+  }
+
+  fetchNotifications()
+  pollingInterval = setInterval(fetchNotifications, 60_000)
+  document.addEventListener('click', handleOutsideClick)
+})
+
+onBeforeUnmount(() => {
+  clearInterval(pollingInterval)
+  document.removeEventListener('click', handleOutsideClick)
+})
 </script>
 
 <style>
