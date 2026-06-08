@@ -9,15 +9,24 @@ use Illuminate\Support\Facades\Hash;
 
 class UserRegisterSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         User::create([
-            'name' => 'Mahmoud Abdelrahim' ,
-            'email' => 'mahmoud@gmail.com' ,
-            'password' => Hash::make('Osha.com01640164#') ,
+            'name' => 'جهاد عبدالرحيم' ,
+            'email' => 'gehad@gmail.com' ,
+            'password' => Hash::make('123456789') ,
+        ]) ;
+
+        User::create([
+            'name' => 'محمد عبدالرحيم' ,
+            'email' => 'mohamed@gmail.com' ,
+            'password' => Hash::make('123456789') ,
+        ]) ;
+
+        User::create([
+            'name' => 'اميرة عبدالرحيم' ,
+            'email' => 'amira@gmail.com' ,
+            'password' => Hash::make('123456789') ,
         ]) ;
     }
 }

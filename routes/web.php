@@ -20,7 +20,7 @@ Route::post('login/store', [AuthController::class ,'loginCheck']);
 
 
 Route::group(['middleware'=> 'auth'], function () {
-    Route::get('/', [DashboardController::class , 'index']);
+    Route::get('/', [DashboardController::class , 'index'])->name('dashboard');
     Route::apiResource('cases' , CaseController::class) ;
     Route::resource('clients', ClientController::class);
     Route::apiResource('sessions', CaseSessionController::class);
